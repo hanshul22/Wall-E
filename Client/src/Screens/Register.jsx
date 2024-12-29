@@ -1,40 +1,52 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthLayout, Input, PasswordInput } from '../Components/Index';
+import axios from '../Config/axios';
 
 export function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
+  // const [username, setUsername] = useState('');
+
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle registration logic here
-    console.log({ email, password, username });
+    
+    axios.post('/users/register',{
+      email,password
+      
+    }).then((res) =>{
+      console.log(res.data);
+      navigate('/login')
+    }).catch((err) => {
+      console.log(err.response.data);
+    })
+    console.log({ email, password, }) //have to add username  ;
   };
 
   return (
     <AuthLayout title="Create Account">
       <form onSubmit={handleSubmit}>
-        <Input
+        {/* <Input
           label="Username"
           type="text"
           value={username}
           onChange={setUsername}
           placeholder="Choose a username"
-        />
+        /> */}
         <Input
           label="Email"
           type="email"
           value={email}
-          onChange={setEmail}
+          onChange={(value) => setEmail(value)}
           placeholder="Enter your email"
         />
         <PasswordInput
           label="Password"
           value={password}
-          onChange={setPassword}
+          onChange={(value) => setPassword(value)}
           placeholder="Choose a password"
         />
         <motion.button
