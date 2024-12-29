@@ -1,15 +1,26 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthLayout, Input, PasswordInput } from '../Components/Index';
+import axios from '../Config/axios';
 
 export function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const navigate = useNavigate()
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic here
+    axios.post('/users/login', {
+      email,password
+    }).then((res) => {
+      console.log(res.data)
+      navigate('/')
+    }).catch((err) => (
+      console.log(err.response.data)
+    ))
+    
     console.log({ email, password });
   };
 
@@ -20,13 +31,14 @@ export function Login() {
           label="Email"
           type="email"
           value={email}
-          onChange={setEmail}
+          onChange={(value) => setEmail(value)}
+
           placeholder="Enter your email"
         />
         <PasswordInput
           label="Password"
           value={password}
-          onChange={setPassword}
+          onChange={(value) => setPassword(value)}
           placeholder="Enter your password"
         />
         <motion.button
