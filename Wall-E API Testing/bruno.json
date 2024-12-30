@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Wall-E API Testing",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

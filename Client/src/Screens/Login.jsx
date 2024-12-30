@@ -3,10 +3,13 @@ import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthLayout, Input, PasswordInput } from '../Components/Index';
 import axios from '../Config/axios';
+import { useUser } from '../Context/User.context';
 
-export function Login() {
+export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const {setUser} = useUser()
 
   const navigate = useNavigate()
 
@@ -16,6 +19,10 @@ export function Login() {
       email,password
     }).then((res) => {
       console.log(res.data)
+      
+      localStorage.setItem('token', res.data.token)
+      setUser(res.data.user)
+      
       navigate('/')
     }).catch((err) => (
       console.log(err.response.data)
